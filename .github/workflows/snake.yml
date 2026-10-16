@@ -16,15 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Paleta GLITCH: matriz neutra, só o nível mais alto vira sinal.
-      - uses: Platane/snk@v3
-        id: snake-gif
-        with:
-          github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/github-contribution-grid-snake.svg?color_snake=#006b2e&color_dots=#d9d4cc,#7e7972,#4d4943,#0d0d0d,#006b2e&color_dot_border=#e4e0d9
-            dist/github-contribution-grid-snake-dark.svg?color_snake=#00ff66&color_dots=#1c1c1c,#333331,#6a6a66,#f2f0eb,#00ff66&color_dot_border=#141414
-
+      # Antes da snake: o container dela cria dist/ como root.
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -35,6 +27,15 @@ jobs:
           python scripts/telemetry.py --user "${{ github.repository_owner }}" --out dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Paleta GLITCH: matriz neutra, só o nível mais alto vira sinal.
+      - uses: Platane/snk@v3
+        id: snake-gif
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/github-contribution-grid-snake.svg?color_snake=#006b2e&color_dots=#d9d4cc,#7e7972,#4d4943,#0d0d0d,#006b2e&color_dot_border=#e4e0d9
+            dist/github-contribution-grid-snake-dark.svg?color_snake=#00ff66&color_dots=#1c1c1c,#333331,#6a6a66,#f2f0eb,#00ff66&color_dot_border=#141414
 
       - uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
